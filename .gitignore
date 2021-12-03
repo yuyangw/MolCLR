@@ -1,0 +1,9 @@
+# cache
+.vscode
+__pycache__
+
+*.zip
+
+data/
+finetune/
+experiments/

@@ -1,0 +1,31 @@
+batch_size: 512                         # batch size
+warm_up: 10                             # warm-up epochs
+epochs: 100                             # total number of epochs
+
+load_model: None                        # resume training
+eval_every_n_epochs: 1                  # validation frequency
+save_every_n_epochs: 5                  # automatic model saving frequecy
+log_every_n_steps: 50                   # print training log frequency
+
+fp16_precision: False                   # float precision 16 (i.e. True/False)
+init_lr: 0.0005                         # initial learning rate for Adam
+weight_decay: 1e-5                      # weight decay for Adam
+gpu: cuda:0                             # training GPU 
+
+model_type: gin                         # GNN backbone (i.e., gin/gcn)
+model: 
+  num_layer: 5                          # number of graph conv layers
+  emb_dim: 300                          # embedding dimension in graph conv layers
+  feat_dim: 512                         # output feature dimention
+  drop_ratio: 0                         # dropout ratio
+  pool: mean                            # readout pooling (i.e., mean/max/add)
+
+aug: node                               # molecule graph augmentation strategy (i.e., node/subgraph/mix)
+dataset:
+  num_workers: 12                       # dataloader number of workers
+  valid_size: 0.05                      # ratio of validation data
+  data_path: data/pubchem-10m-clean.txt # path of pre-training data
+
+loss:
+  temperature: 0.1                      # temperature of NT-Xent loss
+  use_cosine_similarity: True           # whether to use cosine similarity in NT-Xent loss (i.e. True/False)
