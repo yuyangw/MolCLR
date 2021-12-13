@@ -4,9 +4,10 @@
 [Yuyang Wang](https://yuyangw.github.io/), [Jianren Wang](https://www.jianrenw.com/), [Zhonglin Cao](https://www.linkedin.com/in/zhonglincao/?trk=public_profile_browsemap), [Amir Barati Farimani](https://www.meche.engineering.cmu.edu/directory/bios/barati-farimani-amir.html) </br>
 Carnegie Mellon University
 
-<img src="figs/pipeline.png" width="500">
+<img src="figs/pipeline.gif" width="400">
 
-This is the official implementation of ["Molecular Contrastive Learning of Representations via Graph Neural Networks"](https://arxiv.org/pdf/2102.10056.pdf). In this work, we introduce a contrastive learning framework, named <strong><em>MolCLR</em></strong>, for molecular representation learning on large unlabelled dataset. MolCLR greatly boosts the performance of GNN models on various downstream molecular property prediction benchmarks. If you find our work useful in your research, please cite:
+This is the official implementation of <strong><em>MolCLR</em></strong>: ["Molecular Contrastive Learning of Representations via Graph Neural Networks"](https://arxiv.org/pdf/2102.10056.pdf). In this work, we introduce a contrastive learning framework for molecular representation learning on large unlabelled dataset. MolCLR pre-training greatly boosts the performance of GNN models on various downstream molecular property prediction benchmarks. 
+<!-- If you find our work useful in your research, please cite:
 
 ```
 @article{wang2021molclr,
@@ -15,10 +16,12 @@ This is the official implementation of ["Molecular Contrastive Learning of Repre
   journal={arXiv preprint arXiv:2102.10056},
   year={2021}
 }
-```
+``` -->
 
 
-## Installation and Usage
+## Getting Started
+
+### Installation
 
 Set up conda environment and clone the github repo
 
@@ -39,17 +42,28 @@ $ git clone https://github.com/yuyangw/MolCLR.git
 $ cd MolCLR
 ```
 
-You can download the pre-training data and benchmarks used in the paper [here](https://drive.google.com/file/d/1aDtN6Qqddwwn2x612kWz9g0xQcuAtzDE/view?usp=sharing) and extract the zip file under `./data` folder.
+### Dataset
 
-To train the MolCLR, where the configurations can be found in `config.yaml`
+You can download the pre-training data and benchmarks used in the paper [here](https://drive.google.com/file/d/1aDtN6Qqddwwn2x612kWz9g0xQcuAtzDE/view?usp=sharing) and extract the zip file under `./data` folder. The data for pre-training can be found in `pubchem-10m-clean.txt`. All the other benchmarks for fine-tuning are saved in each folder.
+
+### Pre-training
+
+To train the MolCLR, where the configurations and detailed explaination for each variable can be found in `config.yaml`
 ```
 $ python molclr.py
 ```
 
-To fine-tune the MolCLR pre-trained model on downstream molecular benchmarks, where the configurations can be found in `config_finetune.yaml`
+To monitor the training via tensorboard, run `tensorboard --logdir ckpt/{PATH}` and click the URL http://127.0.0.1:6006/.
+
+
+### Fine-tuning 
+
+To fine-tune the MolCLR pre-trained model on downstream molecular benchmarks, where the configurations and detailed explaination for each variable can be found in `config_finetune.yaml`
 ```
 $ python finetune.py
 ```
+
+### Pre-trained models
 
 We also provide pre-trained GCN and GIN models, which can be found in `ckpt/pretrained_gin` and `ckpt/pretrained_gcn` respectively. 
 
@@ -57,4 +71,4 @@ We also provide pre-trained GCN and GIN models, which can be found in `ckpt/pret
 ## Acknowledgement
 
 - PyTorch implementation of SimCLR: [https://github.com/sthalles/SimCLR](https://github.com/sthalles/SimCLR)
-- PyTorch & PyG implementation of "Strategies for Pre-training Graph Neural Networks": [https://github.com/snap-stanford/pretrain-gnns](https://github.com/snap-stanford/pretrain-gnns)
+- Strategies for Pre-training Graph Neural Networks: [https://github.com/snap-stanford/pretrain-gnns](https://github.com/snap-stanford/pretrain-gnns)

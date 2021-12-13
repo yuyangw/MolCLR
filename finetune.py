@@ -1,7 +1,6 @@
 import os
 import shutil
 import sys
-import socket
 import yaml
 import numpy as np
 import pandas as pd
@@ -404,8 +403,8 @@ if __name__ == "__main__":
         config['dataset']['task'] = 'regression'
         config['dataset']['data_path'] = 'data/qm8/qm8.csv'
         target_list = [
-            "E1-CC2", "E2-CC2", "f1-CC2", "f2-CC2", "E1-PBE0", "E2-PBE0", "f1-PBE0", "f2-PBE0", 
-            "E1-PBE0", "E2-PBE0", "f1-PBE0", "f2-PBE0", "E1-CAM", "E2-CAM", "f1-CAM","f2-CAM"
+            "E1-CC2", "E2-CC2", "f1-CC2", "f2-CC2", "E1-PBE0", "E2-PBE0", 
+            "f1-PBE0", "f2-PBE0", "E1-CAM", "E2-CAM", "f1-CAM","f2-CAM"
         ]
     
     elif config["task_name"] == 'qm9':
