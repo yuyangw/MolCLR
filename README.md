@@ -1,6 +1,6 @@
 ## Molecular Contrastive Learning of Representations via Graph Neural Networks ##
 
-#### In Nature Machine Intelligence [[Paper]](https://www.nature.com/articles/s42256-022-00447-x) [[arXiv]](https://arxiv.org/abs/2102.10056/) [[PDF]](https://www.nature.com/articles/s42256-022-00447-x.pdf) </br>
+#### Nature Machine Intelligence [[Paper]](https://www.nature.com/articles/s42256-022-00447-x) [[arXiv]](https://arxiv.org/abs/2102.10056/) [[PDF]](https://www.nature.com/articles/s42256-022-00447-x.pdf) </br>
 [Yuyang Wang](https://yuyangw.github.io/), [Jianren Wang](https://www.jianrenw.com/), [Zhonglin Cao](https://www.linkedin.com/in/zhonglincao/?trk=public_profile_browsemap), [Amir Barati Farimani](https://www.meche.engineering.cmu.edu/directory/bios/barati-farimani-amir.html) </br>
 Carnegie Mellon University </br>
 
