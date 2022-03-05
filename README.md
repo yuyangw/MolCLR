@@ -1,22 +1,23 @@
-# MolCLR
+## Molecular Contrastive Learning of Representations via Graph Neural Networks ##
 
-[**Molecular Contrastive Learning of Representations via Graph Neural Networks**](https://arxiv.org/pdf/2102.10056.pdf) </br>
+#### In Nature Machine Intelligence [[Paper]](https://www.nature.com/articles/s42256-022-00447-x) [[arXiv]](https://arxiv.org/abs/2102.10056/) [[PDF]](https://www.nature.com/articles/s42256-022-00447-x.pdf) </br>
 [Yuyang Wang](https://yuyangw.github.io/), [Jianren Wang](https://www.jianrenw.com/), [Zhonglin Cao](https://www.linkedin.com/in/zhonglincao/?trk=public_profile_browsemap), [Amir Barati Farimani](https://www.meche.engineering.cmu.edu/directory/bios/barati-farimani-amir.html) </br>
-Carnegie Mellon University
+Carnegie Mellon University </br>
 
-<img src="figs/pipeline.gif" width="400">
+<img src="figs/pipeline.gif" width="450">
 
-This is the official implementation of <strong><em>MolCLR</em></strong>: ["Molecular Contrastive Learning of Representations via Graph Neural Networks"](https://arxiv.org/pdf/2102.10056.pdf). In this work, we introduce a contrastive learning framework for molecular representation learning on large unlabelled dataset. MolCLR pre-training greatly boosts the performance of GNN models on various downstream molecular property prediction benchmarks. 
-<!-- If you find our work useful in your research, please cite:
+This is the official implementation of <strong><em>MolCLR</em></strong>: ["Molecular Contrastive Learning of Representations via Graph Neural Networks"](https://www.nature.com/articles/s42256-022-00447-x). In this work, we introduce a contrastive learning framework for molecular representation learning on large unlabelled dataset (~10M unique molecules). <strong><em>MolCLR</em></strong> pre-training greatly boosts the performance of GNN models on various downstream molecular property prediction benchmarks. 
+If you find our work useful in your research, please cite:
 
 ```
-@article{wang2021molclr,
-  title={MolCLR: Molecular contrastive learning of representations via graph neural networks},
-  author={Wang, Yuyang and Wang, Jianren and Cao, Zhonglin and Farimani, Amir Barati},
-  journal={arXiv preprint arXiv:2102.10056},
-  year={2021}
+@article{wang2022molclr,
+  title={Molecular contrastive learning of representations via graph neural networks},
+  author={Wang, Yuyang and Wang, Jianren and Cao, Zhonglin and Barati Farimani, Amir},
+  journal={Nature Machine Intelligence},
+  year={2022},
+  doi={10.1038/s42256-022-00447-x}
 }
-``` -->
+```
 
 
 ## Getting Started
@@ -44,7 +45,7 @@ $ cd MolCLR
 
 ### Dataset
 
-You can download the pre-training data and benchmarks used in the paper [here](https://drive.google.com/file/d/1aDtN6Qqddwwn2x612kWz9g0xQcuAtzDE/view?usp=sharing) and extract the zip file under `./data` folder. The data for pre-training can be found in `pubchem-10m-clean.txt`. All the other benchmarks for fine-tuning are saved in each folder.
+You can download the pre-training data and benchmarks used in the paper [here](https://drive.google.com/file/d/1aDtN6Qqddwwn2x612kWz9g0xQcuAtzDE/view?usp=sharing) and extract the zip file under `./data` folder. The data for pre-training can be found in `pubchem-10m-clean.txt`. All the databases for fine-tuning are saved in the folder under the benchmark name. You can also find the benchmarks from [MoleculeNet](https://moleculenet.org/).
 
 ### Pre-training
 
@@ -54,7 +55,6 @@ $ python molclr.py
 ```
 
 To monitor the training via tensorboard, run `tensorboard --logdir ckpt/{PATH}` and click the URL http://127.0.0.1:6006/.
-
 
 ### Fine-tuning 
 
@@ -66,7 +66,6 @@ $ python finetune.py
 ### Pre-trained models
 
 We also provide pre-trained GCN and GIN models, which can be found in `ckpt/pretrained_gin` and `ckpt/pretrained_gcn` respectively. 
-
 
 ## Acknowledgement
 
