@@ -14,8 +14,9 @@ If you find our work useful in your research, please cite:
   title={Molecular contrastive learning of representations via graph neural networks},
   author={Wang, Yuyang and Wang, Jianren and Cao, Zhonglin and Barati Farimani, Amir},
   journal={Nature Machine Intelligence},
+  pages={1--9},
   year={2022},
-  doi={10.1038/s42256-022-00447-x}
+  publisher={Nature Publishing Group}
 }
 ```
 
