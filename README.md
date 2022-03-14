@@ -16,7 +16,8 @@ If you find our work useful in your research, please cite:
   journal={Nature Machine Intelligence},
   pages={1--9},
   year={2022},
-  publisher={Nature Publishing Group}
+  publisher={Nature Publishing Group},
+  doi={10.1038/s42256-022-00447-x}
 }
 ```
 
