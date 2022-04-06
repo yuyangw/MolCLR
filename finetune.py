@@ -221,6 +221,9 @@ class FineTune(object):
                 if self.normalizer:
                     pred = self.normalizer.denorm(pred)
 
+                if self.config['dataset']['task'] == 'classification':
+                    pred = F.softmax(pred, dim=-1)
+
                 if self.device == 'cpu':
                     predictions.extend(pred.detach().numpy())
                     labels.extend(data.y.flatten().numpy())
@@ -276,6 +279,9 @@ class FineTune(object):
 
                 if self.normalizer:
                     pred = self.normalizer.denorm(pred)
+
+                if self.config['dataset']['task'] == 'classification':
+                    pred = F.softmax(pred, dim=-1)
 
                 if self.device == 'cpu':
                     predictions.extend(pred.detach().numpy())
