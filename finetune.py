@@ -121,7 +121,7 @@ class FineTune(object):
 
         layer_list = []
         for name, param in model.named_parameters():
-            if 'pred_lin' in name:
+            if 'pred_head' in name:
                 print(name, param.requires_grad)
                 layer_list.append(name)
 

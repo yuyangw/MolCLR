@@ -131,13 +131,13 @@ class GCN(nn.Module):
         self.feat_lin = nn.Linear(self.emb_dim, self.feat_dim)
 
         if self.task == 'classification':
-            self.pred_lin = nn.Sequential(
+            self.pred_head = nn.Sequential(
                 nn.Linear(self.feat_dim, self.feat_dim//2), 
                 nn.Softplus(),
                 nn.Linear(self.feat_dim//2, 2)
             )
         elif self.task == 'regression':
-            self.pred_lin = nn.Sequential(
+            self.pred_head = nn.Sequential(
                 nn.Linear(self.feat_dim, self.feat_dim//2), 
                 nn.Softplus(),
                 nn.Linear(self.feat_dim//2, 1)
@@ -161,7 +161,7 @@ class GCN(nn.Module):
         h = self.pool(h, data.batch)
         h = self.feat_lin(h)
 
-        return h, self.pred_lin(h)
+        return h, self.pred_head(h)
 
     def load_my_state_dict(self, state_dict):
         own_state = self.state_dict()
