@@ -198,7 +198,7 @@ class MolTestDatasetWrapper(object):
 
             split = int(np.floor(self.valid_size * num_train))
             split2 = int(np.floor(self.test_size * num_train))
-            valid_idx, test_idx, train_idx = indices[:split], indices[:split+split2], indices[split+split2:]
+            valid_idx, test_idx, train_idx = indices[:split], indices[split:split+split2], indices[split+split2:]
         
         elif self.splitting == 'scaffold':
             train_idx, valid_idx, test_idx = scaffold_split(train_dataset, self.valid_size, self.test_size)
