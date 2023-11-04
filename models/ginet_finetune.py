@@ -110,7 +110,7 @@ class GINet(nn.Module):
                     nn.Linear(self.feat_dim//2, self.feat_dim//2), 
                     nn.ReLU(inplace=True),
                 ])
-            pred_head.append(nn.Linear(self.feat_dim//2, out_dim))
+
         elif pred_act == 'softplus':
             pred_head = [
                 nn.Linear(self.feat_dim, self.feat_dim//2), 
