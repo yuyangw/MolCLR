@@ -1,38 +1,37 @@
 import math
 
 import torch
-from torch import nn
+from torch import nn, Tensor
 from torch.nn import Parameter
 import torch.nn.functional as F
-from torch.nn import Linear, LayerNorm, ReLU
 
 import torch_sparse
-from torch_sparse import SparseTensor, matmul, fill_diag, sum as sparsesum, mul
-from torch_scatter import scatter
 from torch_scatter import scatter_add
 
 from torch_geometric.nn import MessagePassing, GCNConv
-from torch_geometric.utils import add_self_loops, degree, softmax
+from torch_geometric.utils import add_self_loops
 from torch_geometric.nn import global_add_pool, global_mean_pool, global_max_pool
 from torch_geometric.utils.num_nodes import maybe_num_nodes
+from typing import Optional
 
+OptTensor = Optional[Tensor]
 
-num_atom_type = 119 # including the extra mask tokens
+num_atom_type = 119  # including the extra mask tokens
 num_chirality_tag = 3
 
-num_bond_type = 5 # including aromatic and self-loop edge
-num_bond_direction = 3 
+num_bond_type = 5  # including aromatic and self-loop edge
+num_bond_direction = 3
 
 
 def gcn_norm(edge_index, num_nodes=None):
     num_nodes = maybe_num_nodes(edge_index, num_nodes)
 
-    edge_weight = torch.ones((edge_index.size(1), ), device=edge_index.device)
+    edge_weight = torch.ones((edge_index.size(1),), device=edge_index.device)
 
     row, col = edge_index[0], edge_index[1]
     deg = scatter_add(edge_weight, col, dim=0, dim_size=num_nodes)
     deg_inv_sqrt = deg.pow_(-0.5)
-    deg_inv_sqrt.masked_fill_(deg_inv_sqrt == float('inf'), 0)
+    deg_inv_sqrt.masked_fill_(deg_inv_sqrt == float("inf"), 0)
     return edge_index, deg_inv_sqrt[row] * edge_weight * deg_inv_sqrt[col]
 
 
@@ -65,11 +64,14 @@ class GCNConv(MessagePassing):
 
         # add features corresponding to self-loop edges.
         self_loop_attr = torch.zeros(x.size(0), 2)
-        self_loop_attr[:,0] = 4 #bond type for self-loop edge
+        self_loop_attr[:, 0] = 4  # bond type for self-loop edge
         self_loop_attr = self_loop_attr.to(edge_attr.device).to(edge_attr.dtype)
         edge_attr = torch.cat((edge_attr, self_loop_attr), dim=0)
-        
-        edge_embeddings = self.edge_embedding1(edge_attr[:,0]) + self.edge_embedding2(edge_attr[:,1])
+        edge_attr_long = edge_attr.long()
+
+        edge_embeddings = self.edge_embedding1(
+            edge_attr_long[:, 0]
+        ) + self.edge_embedding2(edge_attr_long[:, 1])
 
         edge_index, __ = gcn_norm(edge_index)
 
@@ -92,7 +94,15 @@ class GCNConv(MessagePassing):
 
 
 class GCN(nn.Module):
-    def __init__(self, task='classification', num_layer=5, emb_dim=300, feat_dim=256, drop_ratio=0, pool='mean'):
+    def __init__(
+        self,
+        task="classification",
+        num_layer=5,
+        emb_dim=300,
+        feat_dim=256,
+        drop_ratio=0,
+        pool="mean",
+    ):
         super(GCN, self).__init__()
         self.num_layer = num_layer
         self.emb_dim = emb_dim
@@ -119,36 +129,37 @@ class GCN(nn.Module):
         for layer in range(num_layer):
             self.batch_norms.append(nn.BatchNorm1d(emb_dim))
 
-        if pool == 'mean':
+        if pool == "mean":
             self.pool = global_mean_pool
-        elif pool == 'add':
+        elif pool == "add":
             self.pool = global_add_pool
-        elif pool == 'max':
+        elif pool == "max":
             self.pool = global_max_pool
         else:
-            raise ValueError('Not defined pooling!')
-        
+            raise ValueError("Not defined pooling!")
+
         self.feat_lin = nn.Linear(self.emb_dim, self.feat_dim)
 
-        if self.task == 'classification':
+        if self.task == "classification":
             self.pred_head = nn.Sequential(
-                nn.Linear(self.feat_dim, self.feat_dim//2), 
+                nn.Linear(self.feat_dim, self.feat_dim // 2),
                 nn.Softplus(),
-                nn.Linear(self.feat_dim//2, 2)
+                nn.Linear(self.feat_dim // 2, 2),
             )
-        elif self.task == 'regression':
+        elif self.task == "regression":
             self.pred_head = nn.Sequential(
-                nn.Linear(self.feat_dim, self.feat_dim//2), 
+                nn.Linear(self.feat_dim, self.feat_dim // 2),
                 nn.Softplus(),
-                nn.Linear(self.feat_dim//2, 1)
+                nn.Linear(self.feat_dim // 2, 1),
             )
 
     def forward(self, data):
         x = data.x
         edge_index = data.edge_index
         edge_attr = data.edge_attr
-
-        h = self.x_embedding1(x[:,0]) + self.x_embedding2(x[:,1])
+        x_emb_type = x[:, 0].long()
+        x_emb_chirality = x[:, 1].long()
+        h = self.x_embedding1(x_emb_type) + self.x_embedding2(x_emb_chirality)
 
         for layer in range(self.num_layer):
             h = self.gnns[layer](h, edge_index, edge_attr)
